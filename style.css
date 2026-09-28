@@ -2201,3 +2201,321 @@ body {
     box-shadow: var(--shadow-sm);
 }
 .btn-editar-fila:active { transform: translateY(0); }
+/* ============================================================
+   MÓVIL (≤ 640px)
+   ============================================================ */
+@media (max-width: 640px) {
+
+    /* ---------- HEADER ---------- */
+    .top-bar {
+        padding: 0 14px;
+        height: 60px;
+    }
+    .logo-area { gap: 10px; }
+    .logo-img { height: 32px; }
+    .logo-text span { font-size: 8.5px; letter-spacing: 1px; }
+    .logo-text strong { font-size: 13px; }
+    .header-right { gap: 8px; }
+    .user-pill {
+        padding: 4px 4px 4px 10px;
+        font-size: 12px;
+        gap: 6px;
+    }
+    .user-pill > i { font-size: 14px; }
+    .user-pill span {
+        max-width: 78px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .logout-btn { padding: 5px 7px; font-size: 12px; }
+
+    /* ---------- LOGIN ---------- */
+    .login-bg { padding: 16px; }
+    .login-card {
+        padding: 32px 24px 26px;
+        border-radius: var(--r-lg);
+    }
+    .login-logo { width: 56px; height: 56px; margin-bottom: 14px; padding: 6px; }
+    .login-title { font-size: 19px; }
+    .login-sub { font-size: 12.5px; margin-bottom: 20px; }
+    .login-label { font-size: 10px; letter-spacing: 1px; margin-top: 14px; }
+    .login-input,
+    .custom-select-trigger { padding: 11px 12px; font-size: 14px; }
+    .custom-select-menu { max-height: 200px; }
+    .custom-select-option { font-size: 13px; padding: 9px 11px; }
+    .login-btn { padding: 12px; font-size: 14px; margin-top: 18px; }
+    .login-footer { margin-top: 18px; font-size: 12px; }
+
+    /* ---------- HOME ---------- */
+    .home-container { padding: 32px 18px 48px; }
+    .home-hero { margin-bottom: 28px; }
+    .home-hero-badge { font-size: 10px; padding: 5px 12px; margin-bottom: 14px; }
+    .home-hero h1 { font-size: 30px; letter-spacing: -0.8px; margin-bottom: 10px; }
+    .home-hero p { font-size: 13.5px; line-height: 1.5; }
+    .plans-grid { grid-template-columns: 1fr; gap: 14px; margin-top: 30px; }
+    .plan-card-media { height: 170px; }
+    .plan-card-body { padding: 18px 18px 16px; gap: 10px; }
+    .plan-card-header h3 { font-size: 15.5px; }
+    .plan-card-arrow { width: 32px; height: 32px; font-size: 12px; }
+    .plan-card-desc { font-size: 12.5px; }
+    .plan-meta-chip { font-size: 11px; padding: 4px 9px; gap: 5px; }
+    .plan-meta-chip i { font-size: 10px; }
+
+    /* ---------- MENÚ DEL PLAN ---------- */
+    .plan-hero {
+        min-height: 220px;
+        padding: 56px 0 24px;
+        margin-bottom: 22px;
+        border-bottom: 1px solid var(--border);
+    }
+    .plan-hero .breadcrumb { top: 10px; }
+    .plan-hero .breadcrumb a {
+        font-size: 12px;
+        padding: 4px 8px 4px 0;
+    }
+    .plan-hero-text { max-width: 100%; }
+    .plan-hero-text h1 {
+        font-size: 26px;
+        letter-spacing: -0.6px;
+        margin-bottom: 8px;
+    }
+    .plan-hero-text .section-tag { font-size: 10px; margin-bottom: 10px; }
+    .plan-hero-text .section-desc { font-size: 13px; }
+    .plan-hero-image {
+        left: 32%;
+        right: -18px;
+        top: -16px;
+        bottom: 0;
+        -webkit-mask-image: linear-gradient(to right,
+            transparent 0%, rgba(0,0,0,0.5) 40%, black 80%, black 100%);
+        mask-image: linear-gradient(to right,
+            transparent 0%, rgba(0,0,0,0.5) 40%, black 80%, black 100%);
+    }
+
+    /* ---------- CARDS DEL MENÚ ---------- */
+    .menu-grid { grid-template-columns: 1fr; gap: 12px; }
+    .menu-card { padding: 18px; gap: 8px; }
+    .menu-card h3 { font-size: 14.5px; }
+    .menu-card p { font-size: 12px; }
+    .menu-icon-img {
+        width: 46px;
+        height: 46px;
+        padding: 5px;
+        border-radius: var(--r-sm);
+    }
+    .menu-card .menu-arrow { top: 20px; right: 18px; font-size: 11px; }
+
+    /* ---------- MAIN ---------- */
+    .main-content {
+        padding: 8px 16px 32px;
+    }
+
+    .section-back {
+        font-size: 12.5px;
+        padding: 4px 0;
+        margin-bottom: 4px;
+        gap: 6px;
+    }
+    .section-back i { font-size: 10px; }
+
+    .section-header { margin-bottom: 16px; }
+    .section-header h1 {
+        font-size: 22px !important;
+        letter-spacing: -0.4px;
+        line-height: 1.15;
+        margin-bottom: 8px;
+    }
+    .section-header h1 br { display: none; }
+    .section-desc { font-size: 12.5px; }
+
+    /* ---------- PROGRESO ---------- */
+    .progress-panel {
+        padding: 14px 16px;
+        margin-bottom: 12px;
+    }
+    .progress-info { margin-bottom: 10px; }
+    .progress-label { font-size: 9.5px; letter-spacing: 1px; }
+    .progress-count { font-size: 12px; }
+    .progress-bar { height: 5px; }
+
+    /* ---------- FILTROS ---------- */
+    .filters-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+    .filters-left {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        gap: 6px;
+        padding-bottom: 4px;
+        margin: 0 -16px;
+        padding-left: 16px;
+        padding-right: 16px;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .filters-left::-webkit-scrollbar { display: none; }
+    .filter-btn {
+        flex-shrink: 0;
+        font-size: 11.5px;
+        padding: 6px 12px;
+    }
+
+    .filters-right {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    .filters-right .filter-area-select,
+    .filters-right .btn-historial,
+    .filters-right .btn-planes,
+    .filters-right .btn-agregar {
+        width: 100%;
+        justify-content: center;
+        font-size: 11.5px;
+        padding: 9px 10px;
+        min-width: 0;
+        height: auto;
+    }
+    .filters-right .filter-area-select { padding: 9px 26px 9px 12px; }
+    .filters-right .btn-planes { grid-column: 1 / -1; }
+
+    /* ---------- TABLAS COMO TARJETAS ---------- */
+    .table-wrapper {
+        background: transparent;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        overflow: visible;
+    }
+
+    .data-table,
+    .data-table tbody,
+    .data-table tr,
+    .data-table td {
+        display: block;
+        width: 100%;
+    }
+    .data-table thead { display: none; }
+
+    .data-table tbody tr {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--r-md);
+        padding: 14px 14px 10px;
+        margin-bottom: 10px;
+        box-shadow: var(--shadow-xs);
+    }
+    .data-table tbody tr:hover { background: var(--white); }
+
+    .data-table tbody td {
+        padding: 5px 0;
+        border-bottom: none;
+        font-size: 13px;
+        line-height: 1.45;
+        color: var(--text);
+    }
+    .data-table tbody td:last-child { padding-bottom: 0; }
+
+    .data-table tbody td:first-child {
+        font-weight: 600;
+        color: var(--text-strong);
+        font-size: 13.5px;
+        padding-bottom: 10px;
+        margin-bottom: 6px;
+        border-bottom: 1px dashed var(--border);
+    }
+
+    .data-table tbody td.acciones-cell {
+        text-align: right;
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid var(--border);
+    }
+
+    /* Labels por columna */
+    #tabla-antes-body td:nth-child(2)::before { content: 'Período'; }
+    #tabla-antes-body td:nth-child(3)::before { content: 'Área responsable'; }
+    #tabla-antes-body td:nth-child(4)::before { content: 'Costo'; }
+    #tabla-antes-body td:nth-child(5)::before { content: 'Estado'; }
+
+    #tabla-durante-body td:nth-child(2)::before { content: 'Período'; }
+    #tabla-durante-body td:nth-child(3)::before { content: 'Área responsable'; }
+    #tabla-durante-body td:nth-child(4)::before { content: 'Estado'; }
+
+    #tabla-despues-body td:nth-child(2)::before { content: 'Período'; }
+    #tabla-despues-body td:nth-child(3)::before { content: 'Área responsable'; }
+    #tabla-despues-body td:nth-child(4)::before { content: 'Estado'; }
+
+    .data-table tbody td[class]::before { display: none; }
+    .data-table tbody td:not(:first-child):not(.acciones-cell)::before {
+        display: block;
+        font-size: 9.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--text-muted);
+        margin-bottom: 2px;
+    }
+
+    .input-costo { width: 100%; }
+
+    /* ---------- MODALES ---------- */
+    .modal-overlay { padding: 12px; }
+    .modal-box,
+    .modal-box-lg {
+        max-width: 100%;
+        border-radius: var(--r-md);
+        max-height: 92vh;
+    }
+    .modal-header { padding: 14px 16px; }
+    .modal-header h3 { font-size: 15px; }
+    .modal-close { font-size: 20px; padding: 3px 8px; }
+    .modal-body { padding: 16px; }
+    .modal-body label { font-size: 10.5px; margin-top: 12px; margin-bottom: 5px; }
+    .modal-body input[type="text"],
+    .modal-body textarea { font-size: 14px; padding: 10px 12px; }
+    .modal-help { font-size: 12px; }
+    .modal-footer {
+        padding: 12px 16px;
+        gap: 8px;
+    }
+    .btn-cancel, .btn-primary {
+        padding: 10px 16px;
+        font-size: 13px;
+        flex: 1;
+    }
+
+    /* Área extra en modal */
+    .area-extra-row { gap: 6px; }
+    .area-extra-select { font-size: 13px; padding: 10px 12px; }
+    .btn-remove-area { width: 40px; height: 40px; }
+    .btn-add-area { font-size: 12px; padding: 8px 12px; }
+    .area-chip { font-size: 12px; padding: 6px 12px; }
+    .areas-responsable-container { gap: 8px; }
+
+    /* Historial */
+    .historial-item { padding: 10px 12px; margin-bottom: 6px; }
+    .historial-head { flex-wrap: wrap; gap: 4px; }
+    .historial-head strong { font-size: 12.5px; }
+    .historial-fecha { font-size: 10px; }
+    .historial-body { font-size: 11.5px; }
+
+    /* Alertas / confirmaciones */
+    .app-modal-overlay { padding: 16px; }
+    .app-modal-box { padding: 22px 20px 18px; max-width: 100%; }
+    .app-modal-icon { width: 46px; height: 46px; font-size: 20px; margin-bottom: 12px; }
+    .app-modal-box h3 { font-size: 15.5px; }
+    .app-modal-box p { font-size: 13px; margin-bottom: 18px; }
+    .app-modal-actions { flex-direction: column-reverse; gap: 8px; }
+    .app-modal-btn { width: 100%; padding: 11px; }
+
+    /* Flowchart */
+    .flowchart-wrapper {
+        zoom: 0.45;
+        border-radius: var(--r-md);
+    }
+}
