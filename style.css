@@ -2518,4 +2518,14 @@ body {
         zoom: 0.45;
         border-radius: var(--r-md);
     }
+
+    /* --- Ajustes al hero del menú del plan --- */
+    .plan-hero-text .section-tag { display: none; }
+    .plan-hero {
+        min-height: 200px;
+        padding: 56px 0 24px;
+    }
+    .plan-hero .breadcrumb {
+        top: 16px;
+    }
 }
