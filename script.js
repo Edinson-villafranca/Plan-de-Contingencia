@@ -23,6 +23,60 @@ function limpiarSesion() {
 }
 
 /* ============================================================
+   FORMATEO DE COSTOS
+   ============================================================ */
+function parsearCosto(valor) {
+    if (valor === null || valor === undefined || valor === '') return 0;
+    let s = String(valor).replace(/[^\d.,]/g, '');
+    if (!s) return 0;
+
+    // Formato en-US: "60,000.50" → la coma es miles, el punto es decimal
+    if (s.includes(',')) {
+        s = s.replace(/,/g, '');
+        const num = parseFloat(s);
+        return isNaN(num) ? 0 : num;
+    }
+
+    // Sin coma. Puede ser decimal "60.5" o formato viejo de-DE "60.000"
+    const partes = s.split('.');
+    if (partes.length > 2) {
+        // "60.000.500" → todos los puntos son separadores de miles
+        return parseInt(partes.join(''), 10) || 0;
+    }
+    if (partes.length === 2) {
+        // Un solo punto. Si la parte decimal tiene 3 dígitos y la parte entera ≤ 3, es formato viejo de miles
+        if (partes[1].length === 3 && partes[0].length <= 3) {
+            return parseInt(partes.join(''), 10) || 0;
+        }
+        // Decimal normal
+        const num = parseFloat(s);
+        return isNaN(num) ? 0 : num;
+    }
+
+    return parseInt(s, 10) || 0;
+}
+
+function formatearCosto(valor) {
+    if (valor === null || valor === undefined || valor === '') return '';
+    const num = parsearCosto(valor);
+    if (isNaN(num) || num === 0 && String(valor).replace(/\D/g, '') === '') return '';
+    return 'S/ ' + num.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+}
+
+function actualizarTotalAntes(medidas) {
+    const el = document.getElementById('total-antes');
+    if (!el) return;
+    const total = medidas.reduce((acc, m) => acc + parsearCosto(m.costo), 0);
+    el.textContent = 'S/ ' + total.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+}
+
+/* ============================================================
    MODAL DE ALERTAS / CONFIRMACIONES
    ============================================================ */
 const appModal        = document.getElementById('app-modal');
@@ -298,7 +352,7 @@ function aplicarVisibilidadGerente() {
     });
 }
 
-function entrarApp() {
+async function entrarApp() {
     const u = obtenerSesion();
     if (!u) return;
 
@@ -308,6 +362,10 @@ function entrarApp() {
     aplicarVisibilidadGerente();
 
     mostrarPantalla('screen-home');
+
+    if (areasCargadas.length === 0) {
+        await cargarAreasEnLogin();
+    }
 
     if (!window.__realtimeActivo) {
         suscribirRealtime();
@@ -341,8 +399,7 @@ const ALIASES = {
     "API": "APT",
     "Administradores de campo": "Administración 3",
     "Energía y Control": "Taller eléctrico",
-    "Seguridad industrial": "SST",
-    "Seguridad Industrial": "SST"
+    "SST": "Seguridad industrial"
 };
 
 function normalizarArea(area) {
@@ -534,6 +591,8 @@ function renderTablaAntes() {
         ? visibles
         : visibles.filter(m => m.estado === filtroEstadoAntes);
 
+    actualizarTotalAntes(filtradas);
+
     if (filtradas.length === 0) {
         tbody.innerHTML = '<tr><td colspan="6" class="loading-cell">No hay actividades para mostrar.</td></tr>';
         actualizarProgresoAntes();
@@ -551,8 +610,8 @@ function renderTablaAntes() {
             <td>
                 <input type="text" class="input-costo"
                        data-id="${act.id}"
-                       placeholder="S/ 0"
-                       value="${act.costo || ''}"
+                       placeholder="S/.0"
+                       value="${formatearCosto(act.costo)}"
                        ${editable ? '' : 'readonly'}>
             </td>
             <td>
@@ -605,11 +664,14 @@ function renderTablaAntes() {
             const id = e.target.dataset.id;
             const item = medidasAntesCache.find(m => m.id === id);
             if (!puedeEditar(item)) return;
-            const valor = e.target.value;
-            if (item) item.costo = valor;
+
+            const valorFormateado = formatearCosto(e.target.value);
+            e.target.value = valorFormateado;
+            if (item) item.costo = valorFormateado;
+
             const { error } = await db
                 .from('medidas_antes')
-                .update({ costo: valor, updated_at: new Date().toISOString() })
+                .update({ costo: valorFormateado, updated_at: new Date().toISOString() })
                 .eq('id', id);
             if (error) console.error('Error al guardar costo:', error);
         });
@@ -1074,7 +1136,7 @@ function abrirModalEditar(tabla, id) {
 
     document.getElementById('agregar-actividad').value = item.actividad || '';
     document.getElementById('agregar-periodo').value = item.periodo || '';
-    document.getElementById('agregar-costo').value = item.costo || '';
+    document.getElementById('agregar-costo').value = formatearCosto(item.costo);
     document.getElementById('areas-lista').innerHTML = '';
 
     const areas = (item.area || '').split('/').map(a => a.trim()).filter(Boolean);
@@ -1158,7 +1220,7 @@ async function guardarNuevaMedida() {
     let periodo = document.getElementById('agregar-periodo').value.trim() || null;
     let costo = null;
     if (tablaModalActual === 'antes') {
-        costo = document.getElementById('agregar-costo').value.trim() || null;
+        costo = formatearCosto(document.getElementById('agregar-costo').value) || null;
     } else if (!periodo) {
         periodo = (tablaModalActual === 'durante') ? 'Durante la alerta' : 'Pos emergencia';
     }
