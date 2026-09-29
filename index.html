@@ -181,7 +181,7 @@
                     </div>
                 </div>
 
-                                <!-- ===== SECCIÓN: FLUJO ===== -->
+                       <!-- ===== SECCIÓN: FLUJO ===== -->
                 <div id="section-flujo" class="section-view">
                     <a class="section-back" onclick="volverAlMenuPlan()">
                         <i class="fas fa-arrow-left"></i> Atrás
@@ -191,44 +191,50 @@
                     </div>
 
                     <div class="flowchart-wrapper">
+                        <!-- Indicador para deslizar en móvil -->
+                        <div class="swipe-hint">
+                            <i class="fas fa-hand-point-right"></i> Desliza para ver más
+                        </div>
+
                         <div class="label-si" style="top: 78px; left: 650px; transform: translateX(-50%);">SI</div>
                         <div class="label-si" style="top: 380px; left: 178px;">SI</div>
 
                         <svg class="connectors" width="1650" height="850">
                             <defs>
-                                <!-- markerWidth y markerHeight en 18 para un tamaño normal. refX="9" esconde la línea dentro de la flecha. -->
+                                <!-- markerWidth 18 para tamaño normal. refX 9 oculta la línea dentro del triángulo -->
                                 <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="18" markerHeight="18" orient="auto" markerUnits="userSpaceOnUse">
                                     <path d="M 0 0 L 10 5 L 0 10 z" fill="#0B6B44" />
                                 </marker>
                             </defs>
-                            <!-- Flecha desde el nodo de arriba hasta la punta superior del rombo (195) -->
-                            <path d="M 170 140 L 170 195" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
                             
-                            <!-- Flecha desde la punta inferior del rombo (335) hasta el nodo de monitoreo (390) -->
-                            <path d="M 170 335 L 170 392" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <!-- Flecha Jefe Seguridad -> Rombo (Toca la punta superior en Y=166) -->
+                            <path d="M 170 140 L 170 166" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
                             
-                            <!-- Flecha desde la punta derecha del rombo (240, 265) hacia la condición de agua -->
-                            <path d="M 240 265 L 320 265 L 320 100 L 362 100" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <!-- Flecha Rombo -> Monitoreo diario (Toca la punta inferior en Y=364) -->
+                            <path d="M 170 364 L 170 390" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
                             
-                            <path d="M 580 100 L 722 100" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <!-- Flecha Rombo -> Condición agua (Toca la punta derecha en X=269) -->
+                            <path d="M 269 265 L 320 265 L 320 100 L 360 100" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            
+                            <path d="M 580 100 L 720 100" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
                             <path d="M 880 140 L 880 180" stroke="#0B6B44" stroke-width="3" fill="none"/>
                             <path d="M 460 180 L 1300 180" stroke="#0B6B44" stroke-width="3" fill="none"/>
                             <path d="M 460 180 L 460 220" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
                             <path d="M 880 180 L 880 220" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
                             <path d="M 1300 180 L 1300 220" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 460 300 L 460 342" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 460 420 L 460 462" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 460 540 L 460 582" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 880 300 L 880 342" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 880 420 L 880 462" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 1300 300 L 1300 342" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 1400 260 L 1442 260" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 460 300 L 460 340" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 460 420 L 460 460" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 460 540 L 460 580" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 880 300 L 880 340" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 880 420 L 880 460" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 1300 300 L 1300 340" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 1400 260 L 1440 260" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
                             <path d="M 1300 410 L 1300 425" stroke="#0B6B44" stroke-width="3" fill="none"/>
                             <path d="M 1300 425 L 1520 425" stroke="#0B6B44" stroke-width="3" fill="none"/>
-                            <path d="M 1300 425 L 1300 462" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 1520 425 L 1520 462" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 1300 540 L 1300 582" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 1520 540 L 1520 582" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 1300 425 L 1300 460" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 1520 425 L 1520 460" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 1300 540 L 1300 580" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 1520 540 L 1520 580" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
                         </svg>
 
                         <div class="grey-box" style="top: 323px; left: 1120px; width: 500px; height: 362px;"></div>
