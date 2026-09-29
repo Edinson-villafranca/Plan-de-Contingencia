@@ -336,179 +336,187 @@
 
                 <!-- ===== SECCIÓN: MEDIDAS ANTES ===== -->
                 <div id="section-antes" class="section-view">
-                    <a class="section-back" onclick="volverAlMenuPlan()">
-                        <i class="fas fa-arrow-left"></i> Atrás
-                    </a>
-                    <div class="section-header">
-                        <h1>Medidas <span>antes</span></h1>
-                        <p class="section-desc">Actividades previas a la emergencia. Click en el estado para cambiarlo.</p>
-                    </div>
+                    <div class="sticky-header-block">
+                        <a class="section-back" onclick="volverAlMenuPlan()">
+                            <i class="fas fa-arrow-left"></i> Atrás
+                        </a>
+                        <div class="section-header">
+                            <h1>Medidas <span>antes</span></h1>
+                        </div>
 
-                    <div class="progress-panel">
-                        <div class="progress-info">
-                            <span class="progress-label">Avance del plan</span>
-                            <span class="progress-count" id="antes-progress-count">— / —</span>
+                        <div class="progress-panel">
+                            <div class="progress-info">
+                                <span class="progress-label">Avance del plan</span>
+                                <span class="progress-count" id="antes-progress-count">— / —</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="antes-progress-fill" style="width:0%"></div>
+                            </div>
                         </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="antes-progress-fill" style="width:0%"></div>
-                        </div>
-                    </div>
 
-                    <div class="filters-bar">
-                        <div class="filters-left">
-                            <button class="filter-btn active" data-filter="all">Todas</button>
-                            <button class="filter-btn" data-filter="no-iniciado">No iniciado</button>
-                            <button class="filter-btn" data-filter="en-ejecucion">En ejecución</button>
-                            <button class="filter-btn" data-filter="finalizado">Finalizado</button>
-                        </div>
-                        <div class="filters-right">
-                            <select class="filter-area-select btn-solo-gerente" id="filtro-area-antes">
-                                <option value="all">Todas las áreas</option>
-                            </select>
-                            <button class="btn-historial btn-solo-gerente" onclick="abrirModalHistorial()">
-                                <i class="fas fa-clock-rotate-left"></i> Historial
-                            </button>
-                            <button class="btn-agregar btn-solo-area" onclick="abrirModalAgregar('antes')">
-                                <i class="fas fa-plus"></i> Agregar medida
-                            </button>
+                        <div class="filters-bar">
+                            <div class="filters-left">
+                                <button class="filter-btn active" data-filter="all">Todas</button>
+                                <button class="filter-btn" data-filter="no-iniciado">No iniciado</button>
+                                <button class="filter-btn" data-filter="en-ejecucion">En ejecución</button>
+                                <button class="filter-btn" data-filter="finalizado">Finalizado</button>
+                            </div>
+                            <div class="filters-right">
+                                <select class="filter-area-select btn-solo-gerente" id="filtro-area-antes">
+                                    <option value="all">Todas las áreas</option>
+                                </select>
+                                <button class="btn-historial btn-solo-gerente" onclick="abrirModalHistorial()">
+                                    <i class="fas fa-clock-rotate-left"></i> Historial
+                                </button>
+                                <button class="btn-agregar btn-solo-area" onclick="abrirModalAgregar('antes')">
+                                    <i class="fas fa-plus"></i> Agregar medida
+                                </button>
+                            </div>
                         </div>
                     </div>
 
                     <div class="table-wrapper">
                         <table class="data-table">
                             <thead>
-    <tr>
-        <th style="width:34%">Actividad</th>
-        <th style="width:20%">Período de Ejecución</th>
-        <th style="width:18%">Área Responsable</th>
-        <th style="width:10%">Costos</th>
-        <th style="width:10%">Estado</th>
-        <th style="width:8%"></th>
-    </tr>
-</thead>
-<tbody id="tabla-antes-body">
-    <tr><td colspan="6" class="loading-cell">Cargando actividades…</td></tr>
-</tbody>
+                                <tr>
+                                    <th style="width:34%">Actividad</th>
+                                    <th style="width:20%">Período de Ejecución</th>
+                                    <th style="width:18%">Área Responsable</th>
+                                    <th style="width:10%">Costos</th>
+                                    <th style="width:10%">Estado</th>
+                                    <th style="width:8%"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-antes-body">
+                                <tr><td colspan="6" class="loading-cell">Cargando actividades…</td></tr>
+                            </tbody>
                         </table>
+                    </div>
+
+                    <div class="total-panel">
+                        <span class="total-panel-label">Total de costos</span>
+                        <span class="total-panel-value" id="total-antes">S/.0</span>
                     </div>
                 </div>
 
                 <!-- ===== SECCIÓN: MEDIDAS DURANTE ===== -->
                 <div id="section-durante" class="section-view">
-                    <a class="section-back" onclick="volverAlMenuPlan()">
-                        <i class="fas fa-arrow-left"></i> Atrás
-                    </a>
-                    <div class="section-header">
-                        <h1>Medidas <span>durante</span></h1>
-                        <p class="section-desc">Las medidas inician bloqueadas. Gerencia General las activa cuando corresponde.</p>
-                    </div>
+                    <div class="sticky-header-block">
+                        <a class="section-back" onclick="volverAlMenuPlan()">
+                            <i class="fas fa-arrow-left"></i> Atrás
+                        </a>
+                        <div class="section-header">
+                            <h1>Medidas <span>durante</span></h1>
+                        </div>
 
-                    <div class="progress-panel">
-                        <div class="progress-info">
-                            <span class="progress-label">Avance del plan</span>
-                            <span class="progress-count" id="durante-progress-count">— / —</span>
+                        <div class="progress-panel">
+                            <div class="progress-info">
+                                <span class="progress-label">Avance del plan</span>
+                                <span class="progress-count" id="durante-progress-count">— / —</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="durante-progress-fill" style="width:0%"></div>
+                            </div>
                         </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="durante-progress-fill" style="width:0%"></div>
-                        </div>
-                    </div>
 
-                    <div class="filters-bar">
-                        <div class="filters-left">
-                            <button class="filter-btn active" data-filter="all" data-tabla="durante">Todas</button>
-                            <button class="filter-btn" data-filter="bloqueado" data-tabla="durante">Bloqueado</button>
-                            <button class="filter-btn" data-filter="iniciado" data-tabla="durante">Iniciado</button>
-                            <button class="filter-btn" data-filter="en-ejecucion" data-tabla="durante">En ejecución</button>
-                            <button class="filter-btn" data-filter="finalizado" data-tabla="durante">Finalizado</button>
-                        </div>
-                        <div class="filters-right">
-                            <select class="filter-area-select btn-solo-gerente" id="filtro-area-durante">
-                                <option value="all">Todas las áreas</option>
-                            </select>
-                            <button class="btn-historial btn-solo-gerente" onclick="abrirModalHistorial()">
-                                <i class="fas fa-clock-rotate-left"></i> Historial
-                            </button>
-                            <button class="btn-planes btn-solo-gerente" id="btn-planes-accion" onclick="togglePlanesAccion()">
-                                <i class="fas fa-play"></i> Iniciar planes de acción
-                            </button>
-                            <button class="btn-agregar btn-solo-area" onclick="abrirModalAgregar('durante')">
-                                <i class="fas fa-plus"></i> Agregar medida
-                            </button>
+                        <div class="filters-bar">
+                            <div class="filters-left">
+                                <button class="filter-btn active" data-filter="all" data-tabla="durante">Todas</button>
+                                <button class="filter-btn" data-filter="bloqueado" data-tabla="durante">Bloqueado</button>
+                                <button class="filter-btn" data-filter="iniciado" data-tabla="durante">Iniciado</button>
+                                <button class="filter-btn" data-filter="en-ejecucion" data-tabla="durante">En ejecución</button>
+                                <button class="filter-btn" data-filter="finalizado" data-tabla="durante">Finalizado</button>
+                            </div>
+                            <div class="filters-right">
+                                <select class="filter-area-select btn-solo-gerente" id="filtro-area-durante">
+                                    <option value="all">Todas las áreas</option>
+                                </select>
+                                <button class="btn-historial btn-solo-gerente" onclick="abrirModalHistorial()">
+                                    <i class="fas fa-clock-rotate-left"></i> Historial
+                                </button>
+                                <button class="btn-planes btn-solo-gerente" id="btn-planes-accion" onclick="togglePlanesAccion()">
+                                    <i class="fas fa-play"></i> Iniciar planes de acción
+                                </button>
+                                <button class="btn-agregar btn-solo-area" onclick="abrirModalAgregar('durante')">
+                                    <i class="fas fa-plus"></i> Agregar medida
+                                </button>
+                            </div>
                         </div>
                     </div>
 
                     <div class="table-wrapper">
                         <table class="data-table">
                             <thead>
-    <tr>
-        <th style="width:42%">Actividad</th>
-        <th style="width:20%">Período de Ejecución</th>
-        <th style="width:20%">Área Responsable</th>
-        <th style="width:10%">Estado</th>
-        <th style="width:8%"></th>
-    </tr>
-</thead>
-<tbody id="tabla-durante-body">
-    <tr><td colspan="5" class="loading-cell">Cargando actividades…</td></tr>
-</tbody>
+                                <tr>
+                                    <th style="width:42%">Actividad</th>
+                                    <th style="width:20%">Período de Ejecución</th>
+                                    <th style="width:20%">Área Responsable</th>
+                                    <th style="width:10%">Estado</th>
+                                    <th style="width:8%"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-durante-body">
+                                <tr><td colspan="5" class="loading-cell">Cargando actividades…</td></tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
 
                 <!-- ===== SECCIÓN: MEDIDAS DESPUÉS ===== -->
                 <div id="section-despues" class="section-view">
-                    <a class="section-back" onclick="volverAlMenuPlan()">
-                        <i class="fas fa-arrow-left"></i> Atrás
-                    </a>
-                    <div class="section-header">
-                        <h1>Medidas <span>después</span></h1>
-                        <p class="section-desc">Acciones posteriores a la emergencia. Click en el estado para cambiarlo.</p>
-                    </div>
+                    <div class="sticky-header-block">
+                        <a class="section-back" onclick="volverAlMenuPlan()">
+                            <i class="fas fa-arrow-left"></i> Atrás
+                        </a>
+                        <div class="section-header">
+                            <h1>Medidas <span>después</span></h1>
+                        </div>
 
-                    <div class="progress-panel">
-                        <div class="progress-info">
-                            <span class="progress-label">Avance del plan</span>
-                            <span class="progress-count" id="despues-progress-count">— / —</span>
+                        <div class="progress-panel">
+                            <div class="progress-info">
+                                <span class="progress-label">Avance del plan</span>
+                                <span class="progress-count" id="despues-progress-count">— / —</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="despues-progress-fill" style="width:0%"></div>
+                            </div>
                         </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="despues-progress-fill" style="width:0%"></div>
-                        </div>
-                    </div>
 
-                    <div class="filters-bar">
-                        <div class="filters-left">
-                            <button class="filter-btn active" data-filter="all" data-tabla="despues">Todas</button>
-                            <button class="filter-btn" data-filter="no-iniciado" data-tabla="despues">No iniciado</button>
-                            <button class="filter-btn" data-filter="en-ejecucion" data-tabla="despues">En ejecución</button>
-                            <button class="filter-btn" data-filter="finalizado" data-tabla="despues">Finalizado</button>
-                        </div>
-                        <div class="filters-right">
-                            <select class="filter-area-select btn-solo-gerente" id="filtro-area-despues">
-                                <option value="all">Todas las áreas</option>
-                            </select>
-                            <button class="btn-historial btn-solo-gerente" onclick="abrirModalHistorial()">
-                                <i class="fas fa-clock-rotate-left"></i> Historial
-                            </button>
-                            <button class="btn-agregar btn-solo-area" onclick="abrirModalAgregar('despues')">
-                                <i class="fas fa-plus"></i> Agregar medida
-                            </button>
+                        <div class="filters-bar">
+                            <div class="filters-left">
+                                <button class="filter-btn active" data-filter="all" data-tabla="despues">Todas</button>
+                                <button class="filter-btn" data-filter="no-iniciado" data-tabla="despues">No iniciado</button>
+                                <button class="filter-btn" data-filter="en-ejecucion" data-tabla="despues">En ejecución</button>
+                                <button class="filter-btn" data-filter="finalizado" data-tabla="despues">Finalizado</button>
+                            </div>
+                            <div class="filters-right">
+                                <select class="filter-area-select btn-solo-gerente" id="filtro-area-despues">
+                                    <option value="all">Todas las áreas</option>
+                                </select>
+                                <button class="btn-historial btn-solo-gerente" onclick="abrirModalHistorial()">
+                                    <i class="fas fa-clock-rotate-left"></i> Historial
+                                </button>
+                                <button class="btn-agregar btn-solo-area" onclick="abrirModalAgregar('despues')">
+                                    <i class="fas fa-plus"></i> Agregar medida
+                                </button>
+                            </div>
                         </div>
                     </div>
 
                     <div class="table-wrapper">
                         <table class="data-table">
                             <thead>
-    <tr>
-        <th style="width:42%">Actividad</th>
-        <th style="width:20%">Período de Ejecución</th>
-        <th style="width:20%">Área Responsable</th>
-        <th style="width:10%">Estado</th>
-        <th style="width:8%"></th>
-    </tr>
-</thead>
-<tbody id="tabla-despues-body">
-    <tr><td colspan="5" class="loading-cell">Cargando actividades…</td></tr>
-</tbody>
+                                <tr>
+                                    <th style="width:42%">Actividad</th>
+                                    <th style="width:20%">Período de Ejecución</th>
+                                    <th style="width:20%">Área Responsable</th>
+                                    <th style="width:10%">Estado</th>
+                                    <th style="width:8%"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-despues-body">
+                                <tr><td colspan="5" class="loading-cell">Cargando actividades…</td></tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -535,15 +543,15 @@
 
                 <label>Área responsable *</label>
                 <div class="areas-responsable-container">
-    <div id="areas-lista" class="areas-lista"></div>
-    <button type="button" class="btn-add-area" id="btn-add-area" onclick="agregarAreaExtra()">
-        <i class="fas fa-plus"></i> Sumar otra área
-    </button>
-</div>
+                    <div id="areas-lista" class="areas-lista"></div>
+                    <button type="button" class="btn-add-area" id="btn-add-area" onclick="agregarAreaExtra()">
+                        <i class="fas fa-plus"></i> Sumar otra área
+                    </button>
+                </div>
 
                 <div class="solo-antes">
                     <label>Costo</label>
-                    <input type="text" id="agregar-costo" placeholder="S/ 0">
+                    <input type="text" id="agregar-costo" placeholder="S/ 0.00">
                 </div>
             </div>
             <div class="modal-footer">
