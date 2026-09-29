@@ -30,25 +30,20 @@ function parsearCosto(valor) {
     let s = String(valor).replace(/[^\d.,]/g, '');
     if (!s) return 0;
 
-    // Formato en-US: "60,000.50" → la coma es miles, el punto es decimal
     if (s.includes(',')) {
         s = s.replace(/,/g, '');
         const num = parseFloat(s);
         return isNaN(num) ? 0 : num;
     }
 
-    // Sin coma. Puede ser decimal "60.5" o formato viejo de-DE "60.000"
     const partes = s.split('.');
     if (partes.length > 2) {
-        // "60.000.500" → todos los puntos son separadores de miles
         return parseInt(partes.join(''), 10) || 0;
     }
     if (partes.length === 2) {
-        // Un solo punto. Si la parte decimal tiene 3 dígitos y la parte entera ≤ 3, es formato viejo de miles
         if (partes[1].length === 3 && partes[0].length <= 3) {
             return parseInt(partes.join(''), 10) || 0;
         }
-        // Decimal normal
         const num = parseFloat(s);
         return isNaN(num) ? 0 : num;
     }
@@ -140,7 +135,7 @@ function mostrarConfirm(mensaje, titulo = 'Confirmar', tipo = 'info') {
 }
 
 /* ============================================================
-   HISTORIAL (solo de actividades nuevas creadas)
+   HISTORIAL
    ============================================================ */
 async function registrarHistorial(accion, tabla, medidaId, detalle) {
     const user = obtenerSesion();
@@ -171,7 +166,7 @@ async function abrirModalHistorial() {
         .order('created_at', { ascending: false })
         .limit(200);
 
-    if (user.rol !== 'gerente_general') {
+    if (!esVistaCompleta()) {
         query = query.eq('area', user.area);
     }
 
@@ -195,7 +190,7 @@ async function abrirModalHistorial() {
             day: '2-digit', month: '2-digit', year: 'numeric',
             hour: '2-digit', minute: '2-digit'
         });
-        const areaExtra = (user.rol === 'gerente_general') ? ` · <em>${h.area}</em>` : '';
+        const areaExtra = esVistaCompleta() ? ` · <em>${h.area}</em>` : '';
         item.innerHTML = `
             <div class="historial-head">
                 <strong>Nueva actividad</strong>
@@ -211,6 +206,219 @@ async function abrirModalHistorial() {
 
 function cerrarModalHistorial() {
     document.getElementById('modal-historial').classList.remove('active');
+}
+
+/* ============================================================
+   FOTOS DE MEDIDAS
+   ============================================================ */
+let imagenesCache = [];
+let fotosContexto = { tabla: null, medidaId: null };
+
+async function cargarImagenes() {
+    const { data, error } = await db
+        .from('imagenes_medidas')
+        .select('*')
+        .order('created_at', { ascending: false });
+    if (error) {
+        console.error('Error al cargar imágenes:', error);
+        return;
+    }
+    imagenesCache = data || [];
+}
+
+function contarFotos(tabla, medidaId) {
+    return imagenesCache.filter(i => i.tabla === tabla && i.medida_id === medidaId).length;
+}
+
+function urlPublicaFoto(path) {
+    const { data } = db.storage.from('medidas-fotos').getPublicUrl(path);
+    return data.publicUrl;
+}
+
+function botonFotosHTML(tabla, medidaId) {
+    const total = contarFotos(tabla, medidaId);
+    return `
+        <button class="btn-fotos ${total > 0 ? 'tiene-fotos' : ''}" onclick="abrirModalFotos('${tabla}', '${medidaId}')" title="Fotos">
+            <i class="fas fa-camera"></i>
+            <span>${total}</span>
+        </button>
+    `;
+}
+
+function abrirModalFotos(tabla, medidaId) {
+    fotosContexto = { tabla, medidaId };
+    document.getElementById('foto-input').value = '';
+
+    const tituloMap = { antes: 'Antes', durante: 'Durante', despues: 'Después' };
+    document.getElementById('modal-fotos-title').textContent =
+        `Fotos · Medidas ${tituloMap[tabla] || tabla}`;
+
+    renderFotosModal();
+    document.getElementById('modal-fotos').classList.add('active');
+}
+
+function cerrarModalFotos() {
+    document.getElementById('modal-fotos').classList.remove('active');
+    fotosContexto = { tabla: null, medidaId: null };
+}
+
+function renderFotosModal() {
+    const { tabla, medidaId } = fotosContexto;
+    if (!tabla || !medidaId) return;
+
+    const fotos = imagenesCache.filter(i => i.tabla === tabla && i.medida_id === medidaId);
+    const grid  = document.getElementById('fotos-grid');
+    const info  = document.getElementById('fotos-info');
+
+    const btnSubir = document.querySelector('#fotos-toolbar .btn-subir-foto');
+    if (btnSubir) {
+        btnSubir.style.display = esVistaCompleta() ? 'none' : 'inline-flex';
+    }
+
+    info.textContent = fotos.length === 0
+        ? 'Sin fotos'
+        : `${fotos.length} foto${fotos.length > 1 ? 's' : ''}`;
+
+    if (fotos.length === 0) {
+        grid.innerHTML = `
+            <div class="fotos-empty">
+                <i class="fas fa-image"></i>
+                <p>No hay fotos cargadas</p>
+            </div>
+        `;
+        return;
+    }
+
+      const soloLectura = esVistaCompleta();
+    grid.innerHTML = '';
+    fotos.forEach(f => {
+        const url = urlPublicaFoto(f.storage_path);
+        const item = document.createElement('div');
+        item.className = 'foto-item';
+        item.innerHTML = `
+            <img src="${url}" alt="${f.nombre}" onclick="abrirLightbox('${url}')">
+            ${!soloLectura ? `
+                <button class="foto-delete" onclick="eliminarFoto('${f.id}', '${f.storage_path}')" title="Eliminar">
+                    <i class="fas fa-times"></i>
+                </button>
+            ` : ''}
+        `;
+        grid.appendChild(item);
+    });
+}
+
+function abrirLightbox(url) {
+    document.getElementById('lightbox-img').src = url;
+    document.getElementById('lightbox').classList.add('active');
+}
+function cerrarLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.getElementById('lightbox-img').src = '';
+}
+
+async function subirFotoSeleccionada(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+        await mostrarAlerta('Solo se permiten imágenes.', 'Tipo inválido', 'warn');
+        event.target.value = '';
+        return;
+    }
+
+    if (esVistaCompleta()) {
+        event.target.value = '';
+        return;
+    }
+
+    const { tabla, medidaId } = fotosContexto;
+    if (!tabla || !medidaId) {
+        event.target.value = '';
+        return;
+    }
+
+    const user = obtenerSesion();
+
+    const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+    const path = `${tabla}/${medidaId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+
+    const { error: errSubida } = await db.storage
+        .from('medidas-fotos')
+        .upload(path, file, { cacheControl: '3600', upsert: false });
+
+    if (errSubida) {
+        console.error(errSubida);
+        await mostrarAlerta('No se pudo subir la foto. Revisa la consola.', 'Error', 'error');
+        event.target.value = '';
+        return;
+    }
+
+    const { error: errInsert } = await db.from('imagenes_medidas').insert({
+        medida_id: medidaId,
+        tabla,
+        nombre: file.name,
+        storage_path: path,
+        area: user.area
+    });
+
+    if (errInsert) {
+        console.error(errInsert);
+        await db.storage.from('medidas-fotos').remove([path]);
+        await mostrarAlerta('No se pudo guardar la referencia de la foto.', 'Error', 'error');
+        event.target.value = '';
+        return;
+    }
+
+    event.target.value = '';
+    await cargarImagenes();
+    renderFotosModal();
+
+    if (tabla === 'antes')   renderTablaAntes();
+    if (tabla === 'durante') renderTablaDurante();
+    if (tabla === 'despues') renderTablaDespues();
+}
+
+async function eliminarFoto(fotoId, storagePath) {
+    if (esVistaCompleta()) return;
+
+    const ok = await mostrarConfirm('¿Eliminar esta foto?', 'Eliminar foto', 'warn');
+    if (!ok) return;
+
+    const { error: errDelete } = await db.storage
+        .from('medidas-fotos')
+        .remove([storagePath]);
+
+    if (errDelete) {
+        console.error(errDelete);
+        await mostrarAlerta('No se pudo eliminar el archivo.', 'Error', 'error');
+        return;
+    }
+
+    await db.from('imagenes_medidas').delete().eq('id', fotoId);
+
+    await cargarImagenes();
+    renderFotosModal();
+
+    const { tabla } = fotosContexto;
+    if (tabla === 'antes')   renderTablaAntes();
+    if (tabla === 'durante') renderTablaDurante();
+    if (tabla === 'despues') renderTablaDespues();
+}
+
+function suscribirRealtimeImagenes() {
+    db.channel('imagenes_cambios')
+        .on('postgres_changes',
+            { event: '*', schema: 'public', table: 'imagenes_medidas' },
+            async () => {
+                await cargarImagenes();
+                renderTablaAntes();
+                renderTablaDurante();
+                renderTablaDespues();
+                if (document.getElementById('modal-fotos').classList.contains('active')) {
+                    renderFotosModal();
+                }
+            })
+        .subscribe();
 }
 
 /* ============================================================
@@ -339,16 +547,26 @@ function mostrarPantalla(id) {
 }
 
 function aplicarVisibilidadGerente() {
-    const gerente = esGerente();
+    const vistaCompleta = esVistaCompleta();
+    const gerenteReal   = esGerente();
+
+    // Filtro de área, historial → los 3 roles con vista completa
     document.querySelectorAll('.btn-solo-gerente').forEach(el => {
         if (el.tagName === 'SELECT') {
-            el.style.display = gerente ? 'inline-block' : 'none';
+            el.style.display = vistaCompleta ? 'inline-block' : 'none';
         } else {
-            el.style.display = gerente ? 'inline-flex' : 'none';
+            el.style.display = vistaCompleta ? 'inline-flex' : 'none';
         }
     });
+
+    // Iniciar planes de acción → solo gerente general
+    document.querySelectorAll('.btn-solo-gerente-real').forEach(el => {
+        el.style.display = gerenteReal ? 'inline-flex' : 'none';
+    });
+
+    // Agregar medida → solo área
     document.querySelectorAll('.btn-solo-area').forEach(el => {
-        el.style.display = gerente ? 'none' : 'inline-flex';
+        el.style.display = vistaCompleta ? 'none' : 'inline-flex';
     });
 }
 
@@ -367,10 +585,15 @@ async function entrarApp() {
         await cargarAreasEnLogin();
     }
 
+    if (imagenesCache.length === 0) {
+        await cargarImagenes();
+    }
+
     if (!window.__realtimeActivo) {
         suscribirRealtime();
         suscribirRealtimeDurante();
         suscribirRealtimeDespues();
+        suscribirRealtimeImagenes();
         window.__realtimeActivo = true;
     }
 
@@ -411,10 +634,22 @@ function esGerente() {
     const u = obtenerSesion();
     return !!(u && u.rol === 'gerente_general');
 }
+function esVistaCompleta() {
+    const u = obtenerSesion();
+    if (!u) return false;
+    return u.rol === 'gerente_general' || u.rol === 'gdo' || u.rol === 'gerencial_legal';
+}
+
+function esSoloLectura() {
+    const u = obtenerSesion();
+    if (!u) return false;
+    return u.rol === 'gdo' || u.rol === 'gerencial_legal';
+}
 
 function puedeEditar(medida) {
     const user = obtenerSesion();
     if (!user) return false;
+    if (esSoloLectura()) return false;
     if (user.rol === 'gerente_general') return false;
     if (!medida || !medida.area) return false;
     const areas = medida.area.split('/').map(normalizarArea);
@@ -434,7 +669,7 @@ function filtrarVisibles(medidas, filtroArea) {
     const user = obtenerSesion();
     if (!user) return [];
     let result = medidas;
-    if (user.rol !== 'gerente_general') {
+    if (!esVistaCompleta()) {
         result = result.filter(m => {
             if (!m.area) return false;
             const areas = m.area.split('/').map(normalizarArea);
@@ -450,7 +685,6 @@ function filtrarVisibles(medidas, filtroArea) {
     }
     return result;
 }
-
 /* ============================================================
    NAVEGACIÓN
    ============================================================ */
@@ -576,7 +810,7 @@ async function cargarMedidasAntes() {
 
     if (error) {
         console.error('Error al cargar antes:', error);
-        tbody.innerHTML = '<tr><td colspan="6" class="loading-cell">Error al cargar datos</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="loading-cell">Error al cargar datos</td></tr>';
         return;
     }
     medidasAntesCache = data || [];
@@ -594,14 +828,14 @@ function renderTablaAntes() {
     actualizarTotalAntes(filtradas);
 
     if (filtradas.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="loading-cell">No hay actividades para mostrar.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="loading-cell">No hay actividades para mostrar.</td></tr>';
         actualizarProgresoAntes();
         return;
     }
 
     tbody.innerHTML = '';
     filtradas.forEach(act => {
-        const editable = puedeEditar(act) && !esGerente();
+        const editable = puedeEditar(act) && !esVistaCompleta();
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${act.actividad}</td>
@@ -610,7 +844,7 @@ function renderTablaAntes() {
             <td>
                 <input type="text" class="input-costo"
                        data-id="${act.id}"
-                       placeholder="S/.0"
+                       placeholder="S/ 0.00"
                        value="${formatearCosto(act.costo)}"
                        ${editable ? '' : 'readonly'}>
             </td>
@@ -618,6 +852,9 @@ function renderTablaAntes() {
                 <span class="badge-estado badge-${act.estado}" data-id="${act.id}">
                     ${ETIQUETAS[act.estado]}
                 </span>
+            </td>
+            <td class="fotos-cell">
+                ${botonFotosHTML('antes', act.id)}
             </td>
             <td class="acciones-cell">
                 ${editable ? `
@@ -632,7 +869,7 @@ function renderTablaAntes() {
 
     tbody.querySelectorAll('.badge-estado').forEach(badge => {
         badge.addEventListener('click', async () => {
-            if (esGerente()) return;
+             if (esVistaCompleta()) return;
 
             const id = badge.dataset.id;
             const item = medidasAntesCache.find(m => m.id === id);
@@ -655,12 +892,12 @@ function renderTablaAntes() {
 
     tbody.querySelectorAll('.input-costo').forEach(input => {
         input.addEventListener('click', (e) => {
-            if (esGerente()) return;
+            if (esVistaCompleta()) return;
             const item = medidasAntesCache.find(m => m.id === e.target.dataset.id);
             if (!puedeEditar(item)) avisoNoEditable();
         });
         input.addEventListener('change', async (e) => {
-            if (esGerente()) return;
+            if (esVistaCompleta()) return;
             const id = e.target.dataset.id;
             const item = medidasAntesCache.find(m => m.id === id);
             if (!puedeEditar(item)) return;
@@ -703,7 +940,7 @@ async function cargarMedidasDurante() {
 
     if (error) {
         console.error('Error al cargar durante:', error);
-        tbody.innerHTML = '<tr><td colspan="5" class="loading-cell">Error al cargar datos</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="loading-cell">Error al cargar datos</td></tr>';
         return;
     }
     medidasDuranteCache = data || [];
@@ -720,20 +957,23 @@ function renderTablaDurante() {
         : visibles.filter(m => m.estado === filtroEstadoDurante);
 
     if (filtradas.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="loading-cell">No hay actividades para mostrar.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="loading-cell">No hay actividades para mostrar.</td></tr>';
         actualizarProgresoDurante();
         return;
     }
 
     tbody.innerHTML = '';
     filtradas.forEach(act => {
-        const editable = puedeEditar(act) && !esGerente();
+        const editable = puedeEditar(act) && !esVistaCompleta();
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${act.actividad}</td>
             <td>${act.periodo || ''}</td>
             <td>${act.area || ''}</td>
             <td>${badgeDuranteHTML(act)}</td>
+            <td class="fotos-cell">
+                ${botonFotosHTML('durante', act.id)}
+            </td>
             <td class="acciones-cell">
                 ${editable ? `
                     <button class="btn-editar-fila" title="Editar medida" onclick="abrirModalEditar('durante', '${act.id}')">
@@ -753,12 +993,13 @@ function renderTablaDurante() {
 }
 
 async function manejarClickDurante(badge) {
+    if (esSoloLectura()) return;
+
     const id = badge.dataset.id;
     const item = medidasDuranteCache.find(m => m.id === id);
     if (!item) return;
     const gerente = esGerente();
 
-    // ---------- GERENTE ----------
     if (gerente) {
         if (item.estado === 'bloqueado') return;
 
@@ -784,7 +1025,6 @@ async function manejarClickDurante(badge) {
         return;
     }
 
-    // ---------- ÁREAS ----------
     if (item.estado === 'bloqueado') {
         await mostrarAlerta(
             'Esta medida aún no ha sido activada por Gerencia General.',
@@ -903,7 +1143,7 @@ async function cargarMedidasDespues() {
 
     if (error) {
         console.error('Error al cargar después:', error);
-        tbody.innerHTML = '<tr><td colspan="5" class="loading-cell">Error al cargar datos</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="loading-cell">Error al cargar datos</td></tr>';
         return;
     }
     medidasDespuesCache = data || [];
@@ -919,14 +1159,14 @@ function renderTablaDespues() {
         : visibles.filter(m => m.estado === filtroEstadoDespues);
 
     if (filtradas.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="loading-cell">No hay actividades para mostrar.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="loading-cell">No hay actividades para mostrar.</td></tr>';
         actualizarProgresoDespues();
         return;
     }
 
     tbody.innerHTML = '';
     filtradas.forEach(act => {
-        const editable = puedeEditar(act) && !esGerente();
+        const editable = puedeEditar(act) && !esVistaCompleta();
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${act.actividad}</td>
@@ -936,6 +1176,9 @@ function renderTablaDespues() {
                 <span class="badge-estado badge-${act.estado}" data-id="${act.id}">
                     ${ETIQUETAS[act.estado]}
                 </span>
+            </td>
+            <td class="fotos-cell">
+                ${botonFotosHTML('despues', act.id)}
             </td>
             <td class="acciones-cell">
                 ${editable ? `
@@ -950,7 +1193,7 @@ function renderTablaDespues() {
 
     tbody.querySelectorAll('.badge-estado').forEach(badge => {
         badge.addEventListener('click', async () => {
-            if (esGerente()) return;
+            if (esVistaCompleta()) return;
 
             const id = badge.dataset.id;
             const item = medidasDespuesCache.find(m => m.id === id);
@@ -1099,6 +1342,7 @@ function actualizarBotonAgregarArea() {
 }
 
 function abrirModalAgregar(tabla) {
+    if (esSoloLectura()) return;
     tablaModalActual = tabla;
     modoModal = 'crear';
     medidaEditando = null;
@@ -1124,6 +1368,7 @@ function abrirModalAgregar(tabla) {
 }
 
 function abrirModalEditar(tabla, id) {
+    if (esSoloLectura()) return;
     const cache = tabla === 'antes' ? medidasAntesCache
                 : tabla === 'durante' ? medidasDuranteCache
                 : medidasDespuesCache;
