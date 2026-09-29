@@ -678,8 +678,6 @@ body {
     overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-x;
-    overscroll-behavior-x: contain;
 }
 
 .connectors {
@@ -2171,4 +2169,11 @@ body {
     .plan-hero-image {
         display: none; /* Ocultar imagen de fondo en móvil para evitar que tape el texto */
     }
+}
+/* Permitir que el gesto de scroll pase a través de los nodos */
+.flowchart-wrapper .node,
+.flowchart-wrapper .diamond-wrapper,
+.flowchart-wrapper .node *,
+.flowchart-wrapper .diamond-wrapper * {
+    touch-action: pan-x;
 }
