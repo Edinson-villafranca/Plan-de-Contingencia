@@ -680,7 +680,6 @@ body {
     -webkit-overflow-scrolling: touch;
     touch-action: pan-x;
     overscroll-behavior-x: contain;
-    zoom: 0.75;
 }
 
 .connectors {
@@ -2138,7 +2137,7 @@ body {
 @media (max-width: 900px) {
     .swipe-hint {
         display: flex;
-        position: absolute;
+        position: fixed;
         bottom: 20px;
         right: 20px;
         background: rgba(11, 107, 68, 0.9);
