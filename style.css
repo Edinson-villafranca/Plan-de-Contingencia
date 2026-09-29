@@ -2126,3 +2126,65 @@ body {
 @media (max-width: 500px) {
     .flowchart-wrapper { zoom: 0.32; }
 }
+/* ============================================================
+   AJUSTES FINALES PARA EL FLUJO Y MÓVIL
+   ============================================================ */
+
+/* El SVG va por encima de los nodos para que las flechas no se corten */
+.connectors {
+    z-index: 3 !important;
+}
+
+/* Los nodos y el rombo van por debajo del SVG */
+.node, .diamond-wrapper, .grey-box {
+    z-index: 2 !important;
+}
+
+/* Puntas del rombo casi rectas para que la flecha las toque perfectamente */
+.diamond-wrapper {
+    border-radius: 2px !important;
+}
+
+/* Indicador de deslizar en móvil */
+.swipe-hint {
+    display: none;
+}
+
+@media (max-width: 900px) {
+    .swipe-hint {
+        display: flex;
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        background: rgba(11, 107, 68, 0.9);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        align-items: center;
+        gap: 8px;
+        z-index: 10;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        pointer-events: none;
+    }
+
+    /* Arreglar superposición del encabezado en móvil */
+    .plan-hero {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px 0;
+        min-height: auto;
+    }
+    .plan-hero .breadcrumb {
+        position: static;
+        margin-bottom: 20px;
+        display: block;
+    }
+    .plan-hero-text {
+        max-width: 100%;
+    }
+    .plan-hero-image {
+        display: none; /* Ocultar imagen de fondo en móvil para evitar que tape el texto */
+    }
+}
