@@ -737,7 +737,7 @@ function siguienteEstado(actual) {
 const ESTADOS_DURANTE = ['bloqueado', 'iniciado', 'en-ejecucion', 'finalizado'];
 const ETIQUETAS_DURANTE = {
     'bloqueado': 'Bloqueado',
-    'iniciado': 'Iniciado',
+    'iniciado': 'Autorizado',
     'en-ejecucion': 'En ejecución',
     'finalizado': 'Finalizado'
 };
@@ -1102,7 +1102,7 @@ async function togglePlanesAccion() {
     if (hayBloqueados) {
         const bloqueados = todos.filter(m => m.estado === 'bloqueado');
         const ok = await mostrarConfirm(
-            `Las ${bloqueados.length} medidas bloqueadas pasarán a estado "Iniciado". ¿Confirmas?`,
+            'Las ${bloqueados.length} medidas bloqueadas pasarán a estado "Autorizado". ¿Confirmas?',
             'Iniciar planes de acción',
             'info'
         );
