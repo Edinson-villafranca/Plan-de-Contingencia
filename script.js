@@ -5,7 +5,23 @@ const SUPABASE_URL  = 'https://bfhfnldqwsrcpsdqpyat.supabase.co';
 const SUPABASE_KEY  = 'sb_publishable_z-jW4WrGLq7wEhCI_CW3Ig_vQZwtOMh';
 
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+/* ============================================================
+   FIREBASE CLOUD MESSAGING (FCM)
+   ============================================================ */
+const firebaseConfig = {
+  apiKey: "AIzaSyA7Qetf1kwg2orGCbEwsRqeh0a11gtcs4U",
+  authDomain: "cotingencia-1eead.firebaseapp.com",
+  projectId: "cotingencia-1eead",
+  storageBucket: "cotingencia-1eead.firebasestorage.app",
+  messagingSenderId: "557548438329",
+  appId: "1:557548438329:web:6745fb497c2cc89117dee8"
+};
 
+const VAPID_PUBLIC_KEY = "BCan4P2QR0bSBc4DKW7lfPpLQtgWRFdAW-4_-sEaLaZcj7yCe8hfuewWizSvrjtjpwpS6QZMvU0_xpoo-19puls";
+const SUPABASE_URL_FUNCTIONS = "https://bfhfnldqwsrcpsdqpyat.supabase.co/functions/v1";
+
+firebase.initializeApp(firebaseConfig);
+const messaging = firebase.messaging();
 /* ============================================================
    LOGIN Y SESIÓN
    ============================================================ */
@@ -600,6 +616,7 @@ async function entrarApp() {
     cargarMedidasAntes();
     cargarMedidasDurante();
     cargarMedidasDespues();
+     activarNotificacionesPush();
 }
 
 function verificarSesion() {
@@ -1102,7 +1119,7 @@ async function togglePlanesAccion() {
     if (hayBloqueados) {
         const bloqueados = todos.filter(m => m.estado === 'bloqueado');
         const ok = await mostrarConfirm(
-            'Las ${bloqueados.length} medidas bloqueadas pasarán a estado "Autorizado". ¿Confirmas?',
+            `Las ${bloqueados.length} medidas bloqueadas pasarán a estado "Autorizado". ¿Confirmas?`,
             'Iniciar planes de acción',
             'info'
         );
@@ -1113,6 +1130,27 @@ async function togglePlanesAccion() {
                 .update({ estado: 'iniciado', updated_at: new Date().toISOString() })
                 .eq('id', m.id);
         }
+
+        // ⬇️ NUEVO: enviar notificación push a todos los encargados
+        try {
+            const resp = await fetch(`${SUPABASE_URL_FUNCTIONS}/send-push-notification`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: '🚨 ALERTA DE HUAYCO',
+                    body: 'Gerencia General ha autorizado el inicio de los planes de acción.'
+                })
+            });
+            if (resp.ok) {
+                console.log('[FCM] Alertas push enviadas.');
+            } else {
+                console.error('[FCM] Error al enviar alertas:', await resp.text());
+            }
+        } catch (err) {
+            console.error('[FCM] Error de conexión:', err);
+        }
+        // ⬆️ FIN NUEVO
+
     } else {
         const ok = await mostrarConfirm(
             `Las ${todos.length} medidas volverán a estado "Bloqueado". ¿Confirmas?`,
@@ -1507,7 +1545,87 @@ async function guardarNuevaMedida() {
     if (tablaModalActual === 'durante') cargarMedidasDurante();
     if (tablaModalActual === 'despues') cargarMedidasDespues();
 }
+/* ============================================================
+   NOTIFICACIONES PUSH (FCM)
+   ============================================================ */
+async function activarNotificacionesPush() {
+    const user = obtenerSesion();
+    if (!user) return;
 
+    if (!('Notification' in window) || !('serviceWorker' in navigator)) {
+        console.log('Este navegador no soporta notificaciones push.');
+        return;
+    }
+
+    try {
+        // 1. Registrar el Service Worker
+        const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+        console.log('[FCM] Service Worker registrado:', registration.scope);
+        await navigator.serviceWorker.ready;
+
+        // 2. Pedir permiso
+        let permiso = Notification.permission;
+        if (permiso === 'default') {
+            permiso = await Notification.requestPermission();
+        }
+        if (permiso !== 'granted') {
+            console.log('[FCM] Permiso de notificaciones denegado.');
+            return;
+        }
+
+        // 3. Obtener token FCM
+        const token = await messaging.getToken({
+            vapidKey: VAPID_PUBLIC_KEY,
+            serviceWorkerRegistration: registration
+        });
+
+        if (!token) {
+            console.log('[FCM] No se pudo obtener el token.');
+            return;
+        }
+
+        console.log('[FCM] Token obtenido:', token.slice(0, 20) + '...');
+
+        // 4. Verificar si ya está guardado
+        const { data: existente } = await db
+            .from('push_subscriptions')
+            .select('id')
+            .eq('user_id', user.area)
+            .eq('token', token)
+            .maybeSingle();
+
+        if (existente) {
+            console.log('[FCM] Token ya registrado para este usuario.');
+            return;
+        }
+
+        // 5. Guardar token en Supabase
+        const { error } = await db.from('push_subscriptions').insert({
+            user_id: user.area,
+            token: token
+        });
+
+        if (error) {
+            console.error('[FCM] Error al guardar token:', error);
+        } else {
+            console.log('[FCM] Token guardado en Supabase.');
+        }
+    } catch (err) {
+        console.error('[FCM] Error al activar notificaciones:', err);
+    }
+}
+
+// Notificaciones en primer plano (cuando la app está abierta)
+if (typeof messaging !== 'undefined') {
+    messaging.onMessage((payload) => {
+        console.log('[FCM] Notificación en primer plano:', payload);
+        const title = payload.notification?.title || 'Aviso';
+        const body = payload.notification?.body || '';
+        if (typeof mostrarAlerta === 'function') {
+            mostrarAlerta(body, title, 'info');
+        }
+    });
+}
 /* ============================================================
    INICIO
    ============================================================ */
