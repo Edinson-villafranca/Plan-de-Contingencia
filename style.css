@@ -668,7 +668,7 @@ body {
    ============================================================ */
 .flowchart-wrapper {
     position: relative;
-    width: 1650px;
+    width: 100%;
     height: 700px;
     background: var(--white);
     border-radius: var(--r-lg);
