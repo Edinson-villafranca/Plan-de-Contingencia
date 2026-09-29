@@ -181,7 +181,7 @@
                     </div>
                 </div>
 
-                <!-- ===== SECCIÓN: FLUJO ===== -->
+                                <!-- ===== SECCIÓN: FLUJO ===== -->
                 <div id="section-flujo" class="section-view">
                     <a class="section-back" onclick="volverAlMenuPlan()">
                         <i class="fas fa-arrow-left"></i> Atrás
@@ -191,40 +191,47 @@
                     </div>
 
                     <div class="flowchart-wrapper">
-                        <div class="label-si" style="top: 85px; left: 660px;">SI</div>
-                        <div class="label-si" style="top: 360px; left: 180px;">SI</div>
+                        <div class="label-si" style="top: 78px; left: 650px; transform: translateX(-50%);">SI</div>
+                        <div class="label-si" style="top: 380px; left: 178px;">SI</div>
 
                         <svg class="connectors" width="1650" height="850">
                             <defs>
-                                <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                                <!-- markerWidth y markerHeight en 18 para un tamaño normal. refX="9" esconde la línea dentro de la flecha. -->
+                                <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="18" markerHeight="18" orient="auto" markerUnits="userSpaceOnUse">
                                     <path d="M 0 0 L 10 5 L 0 10 z" fill="#0B6B44" />
                                 </marker>
                             </defs>
-                            <path d="M 170 140 L 170 180" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 170 320 L 170 400" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 240 250 L 320 250 L 320 100 L 360 100" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 580 100 L 720 100" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <!-- Flecha desde el nodo de arriba hasta la punta superior del rombo (195) -->
+                            <path d="M 170 140 L 170 195" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            
+                            <!-- Flecha desde la punta inferior del rombo (335) hasta el nodo de monitoreo (390) -->
+                            <path d="M 170 335 L 170 392" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            
+                            <!-- Flecha desde la punta derecha del rombo (240, 265) hacia la condición de agua -->
+                            <path d="M 240 265 L 320 265 L 320 100 L 362 100" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            
+                            <path d="M 580 100 L 722 100" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
                             <path d="M 880 140 L 880 180" stroke="#0B6B44" stroke-width="3" fill="none"/>
                             <path d="M 460 180 L 1300 180" stroke="#0B6B44" stroke-width="3" fill="none"/>
                             <path d="M 460 180 L 460 220" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
                             <path d="M 880 180 L 880 220" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
                             <path d="M 1300 180 L 1300 220" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 460 300 L 460 380" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 460 460 L 460 540" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 460 620 L 460 700" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 880 300 L 880 380" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 880 460 L 880 540" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 1300 300 L 1300 360" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 1400 255 L 1440 255" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 1300 430 L 1300 480" stroke="#0B6B44" stroke-width="3" fill="none"/>
-                            <path d="M 1300 480 L 1520 480" stroke="#0B6B44" stroke-width="3" fill="none"/>
-                            <path d="M 1300 480 L 1300 540" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 1520 480 L 1520 540" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 1300 620 L 1300 700" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-                            <path d="M 1520 620 L 1520 700" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 460 300 L 460 342" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 460 420 L 460 462" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 460 540 L 460 582" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 880 300 L 880 342" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 880 420 L 880 462" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 1300 300 L 1300 342" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 1400 260 L 1442 260" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 1300 410 L 1300 425" stroke="#0B6B44" stroke-width="3" fill="none"/>
+                            <path d="M 1300 425 L 1520 425" stroke="#0B6B44" stroke-width="3" fill="none"/>
+                            <path d="M 1300 425 L 1300 462" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 1520 425 L 1520 462" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 1300 540 L 1300 582" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+                            <path d="M 1520 540 L 1520 582" stroke="#0B6B44" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
                         </svg>
 
-                        <div class="grey-box" style="top: 330px; left: 1100px; width: 580px; height: 470px;"></div>
+                        <div class="grey-box" style="top: 323px; left: 1120px; width: 500px; height: 362px;"></div>
 
                         <div class="node node-dark" style="top: 60px; left: 60px; width: 220px; height: 80px;">
                             <div class="node-icon"><i class="fas fa-user"></i></div>
@@ -244,7 +251,7 @@
                             <div class="node-content"><h4>Jefe de Seguridad Patrimonial comunica</h4></div>
                         </div>
 
-                        <div class="node node-light-green-border" style="top: 220px; left: 1440px; width: 220px; height: 80px;">
+                        <div class="node node-light-green-border" style="top: 220px; left: 1440px; width: 180px; height: 80px;">
                             <div class="node-icon"><i class="fas fa-phone-alt"></i></div>
                             <div class="node-content">
                                 <h4>GERENCIA D.O.</h4>
@@ -267,64 +274,64 @@
                             <div class="node-content"><h4>GERENCIA GENERAL</h4></div>
                         </div>
 
-                        <div class="diamond-wrapper" style="top: 180px; left: 100px;">
+                        <div class="diamond-wrapper" style="top: 195px; left: 100px;">
                             <div class="diamond-content">
                                 <i class="fas fa-cloud-showers-heavy"></i>
                                 <strong>¿Hay lluvias intensas?</strong>
                             </div>
                         </div>
 
-                        <div class="node node-light-green-border" style="top: 380px; left: 330px; width: 260px; height: 80px;">
+                        <div class="node node-light-green-border" style="top: 340px; left: 330px; width: 260px; height: 80px;">
                             <div class="node-icon"><i class="fas fa-map-marker-alt"></i></div>
                             <div class="node-content"><p>Abrir compuertas: Santa Beatriz, Muñoz, Pampa Grande, Molle y Menacho</p></div>
                         </div>
 
-                        <div class="node node-light-green-border" style="top: 380px; left: 750px; width: 260px; height: 80px;">
+                        <div class="node node-light-green-border" style="top: 340px; left: 750px; width: 260px; height: 80px;">
                             <div class="node-icon"><i class="fas fa-map-marker-alt"></i></div>
                             <div class="node-content"><h4>JUNTA DEL VALLE PATIVILCA:</h4><p>Delgado 920512239</p></div>
                         </div>
 
-                        <div class="node node-light-green-border" style="top: 360px; left: 1140px; width: 320px; height: 70px; z-index: 2;">
+                        <div class="node node-light-green-border" style="top: 340px; left: 1140px; width: 320px; height: 70px; z-index: 2;">
                             <div class="node-icon"><i class="fas fa-mountain"></i></div>
                             <div class="node-content"><h4>Si el huayco está a la altura de Churlin Alto</h4></div>
                         </div>
 
-                        <div class="node node-light-green-border" style="top: 540px; left: 330px; width: 260px; height: 80px;">
+                        <div class="node node-light-green-border" style="top: 460px; left: 330px; width: 260px; height: 80px;">
                             <div class="node-icon"><i class="fas fa-map-marker-alt"></i></div>
                             <div class="node-content"><h4>SAN MIGUEL OTOPONGO</h4><p>Maldonado 989788389</p></div>
                         </div>
 
-                        <div class="node node-light-green-border" style="top: 540px; left: 750px; width: 260px; height: 80px;">
+                        <div class="node node-light-green-border" style="top: 460px; left: 750px; width: 260px; height: 80px;">
                             <div class="node-icon"><i class="fas fa-map-marker-alt"></i></div>
                             <div class="node-content"><h4>CIERRE DE BOCATOMAS:</h4><p>Alpas, Las Vegas, Otopongo, Huayto y Paramonga</p></div>
                         </div>
 
-                        <div class="node node-dark" style="top: 540px; left: 1210px; width: 180px; height: 80px; z-index: 2;">
+                        <div class="node node-dark" style="top: 460px; left: 1210px; width: 180px; height: 80px; z-index: 2;">
                             <div class="node-icon"><i class="fas fa-tractor"></i></div>
                             <div class="node-content"><h4>OPERACIONES AGRÍCOLAS:</h4><p>987803991</p></div>
                         </div>
 
-                        <div class="node node-dark" style="top: 540px; left: 1440px; width: 160px; height: 80px; z-index: 2;">
+                        <div class="node node-dark" style="top: 460px; left: 1440px; width: 160px; height: 80px; z-index: 2;">
                             <div class="node-icon"><i class="fas fa-wrench"></i></div>
                             <div class="node-content"><h4>APT: 940387152</h4></div>
                         </div>
 
-                        <div class="node node-light-green-border" style="top: 700px; left: 330px; width: 260px; height: 80px;">
+                        <div class="node node-light-green-border" style="top: 580px; left: 330px; width: 260px; height: 80px;">
                             <div class="node-icon"><i class="fas fa-map-marker-alt"></i></div>
                             <div class="node-content"><h4>SAN MATEO DE CHURLIN</h4><p>Domingo 991862559</p></div>
                         </div>
 
-                        <div class="node node-light-green-border" style="top: 700px; left: 1210px; width: 180px; height: 90px; z-index: 2;">
+                        <div class="node node-light-green-border" style="top: 580px; left: 1210px; width: 180px; height: 90px; z-index: 2;">
                             <div class="node-icon"><i class="fas fa-tractor"></i></div>
                             <div class="node-content"><p>Movilizar tierra: puerta 1 hasta la 3 y reubicar maquinarias de los campos. Retiro en chilcal</p></div>
                         </div>
 
-                        <div class="node node-light-green-border" style="top: 700px; left: 1440px; width: 160px; height: 90px; z-index: 2;">
+                        <div class="node node-light-green-border" style="top: 580px; left: 1440px; width: 160px; height: 90px; z-index: 2;">
                             <div class="node-icon"><i class="fas fa-home"></i></div>
                             <div class="node-content"><p>Detener despacho y proteger almacenes</p></div>
                         </div>
 
-                        <div class="node node-light" style="top: 400px; left: 40px; width: 260px; height: 80px;">
+                        <div class="node node-light" style="top: 390px; left: 40px; width: 260px; height: 80px;">
                             <div class="node-icon"><i class="fas fa-calendar-alt"></i></div>
                             <div class="node-content">
                                 <h4>Monitoreo diario: Quebrada Rinconada-Choque</h4>
@@ -379,23 +386,24 @@
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th style="width:34%">Actividad</th>
-                                    <th style="width:20%">Período de Ejecución</th>
-                                    <th style="width:18%">Área Responsable</th>
+                                    <th style="width:32%">Actividad</th>
+                                    <th style="width:18%">Período de Ejecución</th>
+                                    <th style="width:16%">Área Responsable</th>
                                     <th style="width:10%">Costos</th>
                                     <th style="width:10%">Estado</th>
-                                    <th style="width:8%"></th>
+                                    <th style="width:8%">Fotos</th>
+                                    <th style="width:6%"></th>
                                 </tr>
                             </thead>
                             <tbody id="tabla-antes-body">
-                                <tr><td colspan="6" class="loading-cell">Cargando actividades…</td></tr>
+                                <tr><td colspan="7" class="loading-cell">Cargando actividades…</td></tr>
                             </tbody>
                         </table>
                     </div>
 
                     <div class="total-panel">
                         <span class="total-panel-label">Total de costos</span>
-                        <span class="total-panel-value" id="total-antes">S/.0</span>
+                        <span class="total-panel-value" id="total-antes">S/ 0.00</span>
                     </div>
                 </div>
 
@@ -434,7 +442,7 @@
                                 <button class="btn-historial btn-solo-gerente" onclick="abrirModalHistorial()">
                                     <i class="fas fa-clock-rotate-left"></i> Historial
                                 </button>
-                                <button class="btn-planes btn-solo-gerente" id="btn-planes-accion" onclick="togglePlanesAccion()">
+                                <button class="btn-planes btn-solo-gerente-real" id="btn-planes-accion" onclick="togglePlanesAccion()">
                                     <i class="fas fa-play"></i> Iniciar planes de acción
                                 </button>
                                 <button class="btn-agregar btn-solo-area" onclick="abrirModalAgregar('durante')">
@@ -448,15 +456,16 @@
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th style="width:42%">Actividad</th>
-                                    <th style="width:20%">Período de Ejecución</th>
-                                    <th style="width:20%">Área Responsable</th>
+                                    <th style="width:40%">Actividad</th>
+                                    <th style="width:18%">Período de Ejecución</th>
+                                    <th style="width:18%">Área Responsable</th>
                                     <th style="width:10%">Estado</th>
-                                    <th style="width:8%"></th>
+                                    <th style="width:8%">Fotos</th>
+                                    <th style="width:6%"></th>
                                 </tr>
                             </thead>
                             <tbody id="tabla-durante-body">
-                                <tr><td colspan="5" class="loading-cell">Cargando actividades…</td></tr>
+                                <tr><td colspan="6" class="loading-cell">Cargando actividades…</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -507,15 +516,16 @@
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th style="width:42%">Actividad</th>
-                                    <th style="width:20%">Período de Ejecución</th>
-                                    <th style="width:20%">Área Responsable</th>
+                                    <th style="width:40%">Actividad</th>
+                                    <th style="width:18%">Período de Ejecución</th>
+                                    <th style="width:18%">Área Responsable</th>
                                     <th style="width:10%">Estado</th>
-                                    <th style="width:8%"></th>
+                                    <th style="width:8%">Fotos</th>
+                                    <th style="width:6%"></th>
                                 </tr>
                             </thead>
                             <tbody id="tabla-despues-body">
-                                <tr><td colspan="5" class="loading-cell">Cargando actividades…</td></tr>
+                                <tr><td colspan="6" class="loading-cell">Cargando actividades…</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -575,6 +585,34 @@
                 <button class="btn-cancel" onclick="cerrarModalHistorial()">Cerrar</button>
             </div>
         </div>
+    </div>
+
+    <!-- ============ MODAL: FOTOS ============ -->
+    <div id="modal-fotos" class="modal-overlay">
+        <div class="modal-box modal-box-lg">
+            <div class="modal-header">
+                <h3 id="modal-fotos-title">Fotos de la medida</h3>
+                <button class="modal-close" onclick="cerrarModalFotos()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="fotos-toolbar" id="fotos-toolbar">
+                    <button type="button" class="btn-subir-foto btn-solo-area" onclick="document.getElementById('foto-input').click()">
+                        <i class="fas fa-cloud-upload-alt"></i> Subir foto
+                    </button>
+                    <input type="file" id="foto-input" accept="image/*" style="display:none" onchange="subirFotoSeleccionada(event)">
+                    <span class="fotos-info" id="fotos-info"></span>
+                </div>
+                <div id="fotos-grid" class="fotos-grid"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="cerrarModalFotos()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ LIGHTBOX ============ -->
+    <div id="lightbox" class="lightbox" onclick="cerrarLightbox()">
+        <img id="lightbox-img" src="" alt="">
     </div>
 
     <!-- ============ MODAL DE ALERTAS / CONFIRMACIONES ============ -->
