@@ -22,8 +22,8 @@ messaging.onBackgroundMessage((payload) => {
   const notificationTitle = payload.notification?.title || '🚨 ALERTA DE HUAYCO';
   const notificationOptions = {
     body: payload.notification?.body || 'Revisa tu plan de contingencia.',
-    icon: '/assets/logo.png',
-    badge: '/assets/logo.png',
+    icon: './assets/logo.png',
+    badge: './assets/logo.png',
     vibrate: [300, 100, 300, 100, 300, 100, 300],
     requireInteraction: true,
     tag: 'alerta-huayco',
@@ -41,7 +41,7 @@ self.addEventListener('notificationclick', (event) => {
       for (const client of clientList) {
         if ('focus' in client) return client.focus();
       }
-      if (clients.openWindow) return clients.openWindow('/');
+      if (clients.openWindow) return clients.openWindow('./');
     })
   );
 });
