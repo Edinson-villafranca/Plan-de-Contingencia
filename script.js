@@ -854,26 +854,26 @@ function renderTablaAntes() {
     filtradas.forEach(act => {
         const editable = puedeEditar(act) && !esVistaCompleta();
         const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${act.actividad}</td>
-            <td>${act.periodo || ''}</td>
-            <td>${act.area || ''}</td>
-            <td>
+                tr.innerHTML = `
+            <td data-label="Actividad">${act.actividad}</td>
+            <td data-label="Período">${act.periodo || ''}</td>
+            <td data-label="Área">${act.area || ''}</td>
+            <td data-label="Costo">
                 <input type="text" class="input-costo"
                        data-id="${act.id}"
                        placeholder="S/ 0.00"
                        value="${formatearCosto(act.costo)}"
                        ${editable ? '' : 'readonly'}>
             </td>
-            <td>
+            <td data-label="Estado">
                 <span class="badge-estado badge-${act.estado}" data-id="${act.id}">
                     ${ETIQUETAS[act.estado]}
                 </span>
             </td>
-            <td class="fotos-cell">
+            <td class="fotos-cell" data-label="Fotos">
                 ${botonFotosHTML('antes', act.id)}
             </td>
-            <td class="acciones-cell">
+            <td class="acciones-cell" data-label="Acciones">
                 ${editable ? `
                     <button class="btn-editar-fila" title="Editar medida" onclick="abrirModalEditar('antes', '${act.id}')">
                         <i class="fas fa-pen"></i>
@@ -983,15 +983,15 @@ function renderTablaDurante() {
     filtradas.forEach(act => {
         const editable = puedeEditar(act) && !esVistaCompleta();
         const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${act.actividad}</td>
-            <td>${act.periodo || ''}</td>
-            <td>${act.area || ''}</td>
-            <td>${badgeDuranteHTML(act)}</td>
-            <td class="fotos-cell">
+                tr.innerHTML = `
+            <td data-label="Actividad">${act.actividad}</td>
+            <td data-label="Período">${act.periodo || ''}</td>
+            <td data-label="Área">${act.area || ''}</td>
+            <td data-label="Estado">${badgeDuranteHTML(act)}</td>
+            <td class="fotos-cell" data-label="Fotos">
                 ${botonFotosHTML('durante', act.id)}
             </td>
-            <td class="acciones-cell">
+            <td class="acciones-cell" data-label="Acciones">
                 ${editable ? `
                     <button class="btn-editar-fila" title="Editar medida" onclick="abrirModalEditar('durante', '${act.id}')">
                         <i class="fas fa-pen"></i>
@@ -1206,7 +1206,7 @@ function renderTablaDespues() {
     filtradas.forEach(act => {
         const editable = puedeEditar(act) && !esVistaCompleta();
         const tr = document.createElement('tr');
-        tr.innerHTML = `
+                tr.innerHTML = `
             <td>${act.actividad}</td>
             <td>${act.periodo || ''}</td>
             <td>${act.area || ''}</td>
