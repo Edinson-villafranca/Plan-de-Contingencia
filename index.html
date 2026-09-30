@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" href="assets/logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
@@ -370,10 +370,10 @@
 
                         <div class="filters-bar">
                             <div class="filters-left">
-                                <button class="filter-btn active" data-filter="all">Todas</button>
-                                <button class="filter-btn" data-filter="no-iniciado">No iniciado</button>
-                                <button class="filter-btn" data-filter="en-ejecucion">En ejecución</button>
-                                <button class="filter-btn" data-filter="finalizado">Finalizado</button>
+                                <button class="filter-btn active" data-filter="all" data-tooltip="Ver todas las medidas sin filtrar">Todas</button>
+                                <button class="filter-btn" data-filter="no-iniciado" data-tooltip="Aún no se ha comenzado a trabajar en esta medida.">No iniciado</button>
+                                <button class="filter-btn" data-filter="en-ejecucion" data-tooltip="El área responsable está trabajando en ella.">En ejecución</button>
+                                <button class="filter-btn" data-filter="finalizado" data-tooltip="La medida fue completada.">Finalizado</button>
                             </div>
                             <div class="filters-right">
                                 <select class="filter-area-select btn-solo-gerente" id="filtro-area-antes">
@@ -436,11 +436,11 @@
 
                         <div class="filters-bar">
                             <div class="filters-left">
-                                <button class="filter-btn active" data-filter="all" data-tabla="durante">Todas</button>
-                                <button class="filter-btn" data-filter="bloqueado" data-tabla="durante">Bloqueado</button>
-                                <button class="filter-btn" data-filter="iniciado" data-tabla="durante">Autorizado</button>
-                                <button class="filter-btn" data-filter="en-ejecucion" data-tabla="durante">En ejecución</button>
-                                <button class="filter-btn" data-filter="finalizado" data-tabla="durante">Finalizado</button>
+                                <button class="filter-btn active" data-filter="all" data-tabla="durante" data-tooltip="Ver todas las medidas sin filtrar">Todas</button>
+                                <button class="filter-btn" data-filter="bloqueado" data-tabla="durante" data-tooltip="Aún no ha sido activada por Gerencia General.">Bloqueado</button>
+                                <button class="filter-btn" data-filter="iniciado" data-tabla="durante" data-tooltip="Gerencia General la activó. El área puede comenzar a ejecutarla.">Autorizado</button>
+                                <button class="filter-btn" data-filter="en-ejecucion" data-tabla="durante" data-tooltip="El área responsable está ejecutando la medida.">En ejecución</button>
+                                <button class="filter-btn" data-filter="finalizado" data-tabla="durante" data-tooltip="La medida fue completada.">Finalizado</button>
                             </div>
                             <div class="filters-right">
                                 <select class="filter-area-select btn-solo-gerente" id="filtro-area-durante">
@@ -500,10 +500,10 @@
 
                         <div class="filters-bar">
                             <div class="filters-left">
-                                <button class="filter-btn active" data-filter="all" data-tabla="despues">Todas</button>
-                                <button class="filter-btn" data-filter="no-iniciado" data-tabla="despues">No iniciado</button>
-                                <button class="filter-btn" data-filter="en-ejecucion" data-tabla="despues">En ejecución</button>
-                                <button class="filter-btn" data-filter="finalizado" data-tabla="despues">Finalizado</button>
+                                <button class="filter-btn active" data-filter="all" data-tabla="despues" data-tooltip="Ver todas las medidas sin filtrar">Todas</button>
+                                <button class="filter-btn" data-filter="no-iniciado" data-tabla="despues" data-tooltip="Aún no se ha comenzado a trabajar en esta medida.">No iniciado</button>
+                                <button class="filter-btn" data-filter="en-ejecucion" data-tabla="despues" data-tooltip="El área responsable está trabajando en ella.">En ejecución</button>
+                                <button class="filter-btn" data-filter="finalizado" data-tabla="despues" data-tooltip="La medida fue completada.">Finalizado</button>
                             </div>
                             <div class="filters-right">
                                 <select class="filter-area-select btn-solo-gerente" id="filtro-area-despues">
