@@ -312,7 +312,7 @@ function renderFotosModal() {
         const item = document.createElement('div');
         item.className = 'foto-item';
         item.innerHTML = `
-            <img src="${url}" alt="${f.nombre}" onclick="abrirLightbox('${url}')">
+            <img src="${url}" alt="${f.nombre}" loading="lazy" onclick="abrirLightbox('${url}')">
             ${!soloLectura ? `
                 <button class="foto-delete" onclick="eliminarFoto('${f.id}', '${f.storage_path}')" title="Eliminar">
                     <i class="fas fa-times"></i>
@@ -331,7 +331,32 @@ function cerrarLightbox() {
     document.getElementById('lightbox').classList.remove('active');
     document.getElementById('lightbox-img').src = '';
 }
-
+/* ============================================================
+   COMPRIMIR IMAGEN ANTES DE SUBIR
+   ============================================================ */
+async function comprimirImagen(file, maxWidth = 1600, calidad = 0.8) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const escala = Math.min(1, maxWidth / img.width);
+                canvas.width = img.width * escala;
+                canvas.height = img.height * escala;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                canvas.toBlob(
+                    (blob) => resolve(blob),
+                    'image/jpeg',
+                    calidad
+                );
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
 async function subirFotoSeleccionada(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -355,12 +380,14 @@ async function subirFotoSeleccionada(event) {
 
     const user = obtenerSesion();
 
-    const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
-    const path = `${tabla}/${medidaId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+        // Comprimir la imagen antes de subir
+    const archivoComprimido = await comprimirImagen(file);
+
+    const path = `${tabla}/${medidaId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.jpg`;
 
     const { error: errSubida } = await db.storage
         .from('medidas-fotos')
-        .upload(path, file, { cacheControl: '3600', upsert: false });
+        .upload(path, archivoComprimido, { cacheControl: '31536000', upsert: false });
 
     if (errSubida) {
         console.error(errSubida);
