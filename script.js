@@ -28,14 +28,14 @@ const messaging = firebase.messaging();
 const SESSION_KEY = 'pc_user';
 
 function obtenerSesion() {
-    try { return JSON.parse(sessionStorage.getItem(SESSION_KEY)); }
+    try { return JSON.parse(localStorage.getItem(SESSION_KEY)); }
     catch { return null; }
 }
 function guardarSesion(u) {
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify(u));
+    localStorage.setItem(SESSION_KEY, JSON.stringify(u));
 }
 function limpiarSesion() {
-    sessionStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(SESSION_KEY);
 }
 
 /* ============================================================
