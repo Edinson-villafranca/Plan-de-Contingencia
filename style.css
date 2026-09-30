@@ -2237,3 +2237,76 @@ body {
     visibility: visible;
     transform: translateX(-50%) translateY(0);
 }
+/* ============================================================
+   TABLAS RESPONSIVE - TARJETAS EN MÓVIL
+   ============================================================ */
+@media (max-width: 700px) {
+    /* Ocultar el encabezado de la tabla */
+    .data-table thead {
+        display: none;
+    }
+
+    /* Cada fila se convierte en tarjeta */
+    .data-table,
+    .data-table tbody,
+    .data-table tr,
+    .data-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .data-table tr {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--r-lg);
+        margin-bottom: 14px;
+        padding: 14px 16px;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .data-table td {
+        padding: 8px 0 !important;
+        border-bottom: 1px dashed var(--gray-100);
+        text-align: left !important;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        font-size: 13px;
+    }
+
+    .data-table td:last-child {
+        border-bottom: none;
+        padding-bottom: 0 !important;
+    }
+
+    /* Título de cada campo (viene del data-label) */
+    .data-table td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: var(--text-muted);
+        font-size: 10.5px;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        flex-shrink: 0;
+        padding-top: 3px;
+        min-width: 100px;
+    }
+
+    /* Ajustes específicos */
+    .data-table td.input-costo,
+    .data-table td .input-costo {
+        width: 100% !important;
+    }
+
+    .data-table .fotos-cell,
+    .data-table .acciones-cell {
+        text-align: right !important;
+        justify-content: space-between;
+    }
+
+    /* Ocultar la celda de acciones si está vacía */
+    .data-table td.acciones-cell:empty {
+        display: none;
+    }
+}
